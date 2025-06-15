@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "pkg/api/v1;api";
+package api.v1.inventoryservice;
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    consumes: ["application/json"];
+    produces: ["application/json"];
+    info: {
+      title: "Inventory service";
+      version: "1.0.0";
+      description: "Service for managing inventory";
+    };
+};
+
+// Сообщение для запроса резервирования товара
+message ReserveProductRequest {
+    int64 product_id = 1 [(validate.rules).int64.gt = 0];
+    int32 quantity = 2 [(validate.rules).int32.gt = 0];
+}
+
+// Сообщение для ответа на резервирование товара
+message ReserveProductResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+// Сообщение для запроса компенсации товара
+message CompensateProductRequest {
+    int64 product_id = 1 [(validate.rules).int64.gt = 0];
+    int32 quantity = 2 [(validate.rules).int32.gt = 0];
+}
+
+// Сообщение для ответа на компенсацию товара
+message CompensateProductResponse {
+    bool success = 1;
+    string message = 2;
+}
+
+// Сервис управления инвентарем
+service InventoryService {
+    // Резервирование товара
+    rpc ReserveProduct(ReserveProductRequest) returns (ReserveProductResponse) {
+        option (google.api.http) = {
+            post: "/inventory/reserve"
+            body: "*"
+        };
+    }
+
+    // Компенсация товара
+    rpc CompensateProduct(CompensateProductRequest) returns (CompensateProductResponse) {
+        option (google.api.http) = {
+            post: "/inventory/compensate"
+            body: "*"
+        };
+    }
+}
+
+

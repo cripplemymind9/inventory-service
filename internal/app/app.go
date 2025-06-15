@@ -75,7 +75,7 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 	}, nil
 }
 
-// nolint:unparam // Функция возвращает error для соответствия интерфейсу, но в текущей реализации ошибка всегда nil
+//nolint:unparam // Функция возвращает error для соответствия интерфейсу, но в текущей реализации ошибка всегда nil
 func getGRPCServerDependencies(_ config.Config) (*server.Dependencies, error) {
 	return server.NewDependencies(), nil
 }

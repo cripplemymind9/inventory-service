@@ -8,14 +8,14 @@ import (
 )
 
 type CanelReservationItemUseCase struct {
-	transactor                contract.RepoTransactor
+	transactor contract.RepoTransactor
 }
 
 func NewCancelReservationItemUseCase(
 	transactor contract.RepoTransactor,
 ) *CanelReservationItemUseCase {
 	return &CanelReservationItemUseCase{
-		transactor:                transactor,
+		transactor: transactor,
 	}
 }
 

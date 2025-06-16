@@ -8,14 +8,14 @@ import (
 )
 
 type ReserveItemUseCase struct {
-	transactor      contract.RepoTransactor
+	transactor contract.RepoTransactor
 }
 
 func NewReserveItemUseCase(
 	transactor contract.RepoTransactor,
 ) *ReserveItemUseCase {
 	return &ReserveItemUseCase{
-		transactor:      transactor,
+		transactor: transactor,
 	}
 }
 

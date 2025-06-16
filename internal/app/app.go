@@ -106,6 +106,7 @@ func getDB(ctx context.Context, cfg config.DB) (*postgres.DB, error) {
 	return db, err
 }
 
+//nolint:unparam // Функция возвращает error для соответствия интерфейсу, но в текущей реализации ошибка всегда nil
 func getGRPCServerDependencies(_ config.Config, db *postgres.DB) (*server.Dependencies, error) {
 	storage := repo.NewStorage(db)
 

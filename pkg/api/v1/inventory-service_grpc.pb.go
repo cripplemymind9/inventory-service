@@ -19,8 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	InventoryService_ReserveProduct_FullMethodName    = "/api.v1.inventoryservice.InventoryService/ReserveProduct"
-	InventoryService_CompensateProduct_FullMethodName = "/api.v1.inventoryservice.InventoryService/CompensateProduct"
+	InventoryService_ReserveItem_FullMethodName    = "/api.v1.inventoryservice.InventoryService/ReserveItem"
+	InventoryService_CompensateItem_FullMethodName = "/api.v1.inventoryservice.InventoryService/CompensateItem"
 )
 
 // InventoryServiceClient is the client API for InventoryService service.
@@ -30,9 +30,9 @@ const (
 // Сервис управления инвентарем
 type InventoryServiceClient interface {
 	// Резервирование товара
-	ReserveProduct(ctx context.Context, in *ReserveProductRequest, opts ...grpc.CallOption) (*ReserveProductResponse, error)
+	ReserveItem(ctx context.Context, in *ReserveItemRequest, opts ...grpc.CallOption) (*ReserveItemResponse, error)
 	// Компенсация товара
-	CompensateProduct(ctx context.Context, in *CompensateProductRequest, opts ...grpc.CallOption) (*CompensateProductResponse, error)
+	CompensateItem(ctx context.Context, in *CompensateItemRequest, opts ...grpc.CallOption) (*CompensateItemResponse, error)
 }
 
 type inventoryServiceClient struct {
@@ -43,20 +43,20 @@ func NewInventoryServiceClient(cc grpc.ClientConnInterface) InventoryServiceClie
 	return &inventoryServiceClient{cc}
 }
 
-func (c *inventoryServiceClient) ReserveProduct(ctx context.Context, in *ReserveProductRequest, opts ...grpc.CallOption) (*ReserveProductResponse, error) {
+func (c *inventoryServiceClient) ReserveItem(ctx context.Context, in *ReserveItemRequest, opts ...grpc.CallOption) (*ReserveItemResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ReserveProductResponse)
-	err := c.cc.Invoke(ctx, InventoryService_ReserveProduct_FullMethodName, in, out, cOpts...)
+	out := new(ReserveItemResponse)
+	err := c.cc.Invoke(ctx, InventoryService_ReserveItem_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *inventoryServiceClient) CompensateProduct(ctx context.Context, in *CompensateProductRequest, opts ...grpc.CallOption) (*CompensateProductResponse, error) {
+func (c *inventoryServiceClient) CompensateItem(ctx context.Context, in *CompensateItemRequest, opts ...grpc.CallOption) (*CompensateItemResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(CompensateProductResponse)
-	err := c.cc.Invoke(ctx, InventoryService_CompensateProduct_FullMethodName, in, out, cOpts...)
+	out := new(CompensateItemResponse)
+	err := c.cc.Invoke(ctx, InventoryService_CompensateItem_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -70,9 +70,9 @@ func (c *inventoryServiceClient) CompensateProduct(ctx context.Context, in *Comp
 // Сервис управления инвентарем
 type InventoryServiceServer interface {
 	// Резервирование товара
-	ReserveProduct(context.Context, *ReserveProductRequest) (*ReserveProductResponse, error)
+	ReserveItem(context.Context, *ReserveItemRequest) (*ReserveItemResponse, error)
 	// Компенсация товара
-	CompensateProduct(context.Context, *CompensateProductRequest) (*CompensateProductResponse, error)
+	CompensateItem(context.Context, *CompensateItemRequest) (*CompensateItemResponse, error)
 	mustEmbedUnimplementedInventoryServiceServer()
 }
 
@@ -83,11 +83,11 @@ type InventoryServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedInventoryServiceServer struct{}
 
-func (UnimplementedInventoryServiceServer) ReserveProduct(context.Context, *ReserveProductRequest) (*ReserveProductResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method ReserveProduct not implemented")
+func (UnimplementedInventoryServiceServer) ReserveItem(context.Context, *ReserveItemRequest) (*ReserveItemResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReserveItem not implemented")
 }
-func (UnimplementedInventoryServiceServer) CompensateProduct(context.Context, *CompensateProductRequest) (*CompensateProductResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CompensateProduct not implemented")
+func (UnimplementedInventoryServiceServer) CompensateItem(context.Context, *CompensateItemRequest) (*CompensateItemResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CompensateItem not implemented")
 }
 func (UnimplementedInventoryServiceServer) mustEmbedUnimplementedInventoryServiceServer() {}
 func (UnimplementedInventoryServiceServer) testEmbeddedByValue()                          {}
@@ -110,38 +110,38 @@ func RegisterInventoryServiceServer(s grpc.ServiceRegistrar, srv InventoryServic
 	s.RegisterService(&InventoryService_ServiceDesc, srv)
 }
 
-func _InventoryService_ReserveProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ReserveProductRequest)
+func _InventoryService_ReserveItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReserveItemRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InventoryServiceServer).ReserveProduct(ctx, in)
+		return srv.(InventoryServiceServer).ReserveItem(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: InventoryService_ReserveProduct_FullMethodName,
+		FullMethod: InventoryService_ReserveItem_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InventoryServiceServer).ReserveProduct(ctx, req.(*ReserveProductRequest))
+		return srv.(InventoryServiceServer).ReserveItem(ctx, req.(*ReserveItemRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _InventoryService_CompensateProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CompensateProductRequest)
+func _InventoryService_CompensateItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CompensateItemRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(InventoryServiceServer).CompensateProduct(ctx, in)
+		return srv.(InventoryServiceServer).CompensateItem(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: InventoryService_CompensateProduct_FullMethodName,
+		FullMethod: InventoryService_CompensateItem_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(InventoryServiceServer).CompensateProduct(ctx, req.(*CompensateProductRequest))
+		return srv.(InventoryServiceServer).CompensateItem(ctx, req.(*CompensateItemRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -154,12 +154,12 @@ var InventoryService_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*InventoryServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "ReserveProduct",
-			Handler:    _InventoryService_ReserveProduct_Handler,
+			MethodName: "ReserveItem",
+			Handler:    _InventoryService_ReserveItem_Handler,
 		},
 		{
-			MethodName: "CompensateProduct",
-			Handler:    _InventoryService_CompensateProduct_Handler,
+			MethodName: "CompensateItem",
+			Handler:    _InventoryService_CompensateItem_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

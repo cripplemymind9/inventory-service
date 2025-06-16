@@ -18,47 +18,51 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     };
 };
 
+// Общий enum для статусов ответов
+enum ResponseStatus {
+    UNKNOWN = 0;
+    SUCCESS = 1;
+    INSUFFICIENT_QUANTITY = 2;
+    INTERNAL_ERROR = 3;
+}
+
 // Сообщение для запроса резервирования товара
-message ReserveProductRequest {
+message ReserveItemRequest {
     int64 product_id = 1 [(validate.rules).int64.gt = 0];
     int32 quantity = 2 [(validate.rules).int32.gt = 0];
 }
 
 // Сообщение для ответа на резервирование товара
-message ReserveProductResponse {
-    bool success = 1;
-    string message = 2;
+message ReserveItemResponse {
+    ResponseStatus status = 1;
 }
 
 // Сообщение для запроса компенсации товара
-message CompensateProductRequest {
+message CompensateItemRequest {
     int64 product_id = 1 [(validate.rules).int64.gt = 0];
     int32 quantity = 2 [(validate.rules).int32.gt = 0];
 }
 
 // Сообщение для ответа на компенсацию товара
-message CompensateProductResponse {
-    bool success = 1;
-    string message = 2;
+message CompensateItemResponse {
+    ResponseStatus status = 1;
 }
 
 // Сервис управления инвентарем
 service InventoryService {
     // Резервирование товара
-    rpc ReserveProduct(ReserveProductRequest) returns (ReserveProductResponse) {
+    rpc ReserveItem(ReserveItemRequest) returns (ReserveItemResponse) {
         option (google.api.http) = {
-            post: "/inventory/reserve"
+            post: "/api/v1/inventory/reserve"
             body: "*"
         };
     }
 
     // Компенсация товара
-    rpc CompensateProduct(CompensateProductRequest) returns (CompensateProductResponse) {
+    rpc CompensateItem(CompensateItemRequest) returns (CompensateItemResponse) {
         option (google.api.http) = {
-            post: "/inventory/compensate"
+            post: "/api/v1/inventory/compensate"
             body: "*"
         };
     }
 }
-
-

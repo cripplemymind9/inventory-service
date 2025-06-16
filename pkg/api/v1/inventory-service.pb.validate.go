@@ -35,22 +35,22 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on ReserveProductRequest with the rules
+// Validate checks the field values on ReserveItemRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ReserveProductRequest) Validate() error {
+func (m *ReserveItemRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ReserveProductRequest with the rules
+// ValidateAll checks the field values on ReserveItemRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// ReserveProductRequestMultiError, or nil if none found.
-func (m *ReserveProductRequest) ValidateAll() error {
+// ReserveItemRequestMultiError, or nil if none found.
+func (m *ReserveItemRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ReserveProductRequest) validate(all bool) error {
+func (m *ReserveItemRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -58,7 +58,7 @@ func (m *ReserveProductRequest) validate(all bool) error {
 	var errors []error
 
 	if m.GetProductId() <= 0 {
-		err := ReserveProductRequestValidationError{
+		err := ReserveItemRequestValidationError{
 			field:  "ProductId",
 			reason: "value must be greater than 0",
 		}
@@ -69,7 +69,7 @@ func (m *ReserveProductRequest) validate(all bool) error {
 	}
 
 	if m.GetQuantity() <= 0 {
-		err := ReserveProductRequestValidationError{
+		err := ReserveItemRequestValidationError{
 			field:  "Quantity",
 			reason: "value must be greater than 0",
 		}
@@ -80,19 +80,19 @@ func (m *ReserveProductRequest) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return ReserveProductRequestMultiError(errors)
+		return ReserveItemRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// ReserveProductRequestMultiError is an error wrapping multiple validation
-// errors returned by ReserveProductRequest.ValidateAll() if the designated
-// constraints aren't met.
-type ReserveProductRequestMultiError []error
+// ReserveItemRequestMultiError is an error wrapping multiple validation errors
+// returned by ReserveItemRequest.ValidateAll() if the designated constraints
+// aren't met.
+type ReserveItemRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ReserveProductRequestMultiError) Error() string {
+func (m ReserveItemRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -101,11 +101,11 @@ func (m ReserveProductRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ReserveProductRequestMultiError) AllErrors() []error { return m }
+func (m ReserveItemRequestMultiError) AllErrors() []error { return m }
 
-// ReserveProductRequestValidationError is the validation error returned by
-// ReserveProductRequest.Validate if the designated constraints aren't met.
-type ReserveProductRequestValidationError struct {
+// ReserveItemRequestValidationError is the validation error returned by
+// ReserveItemRequest.Validate if the designated constraints aren't met.
+type ReserveItemRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -113,24 +113,24 @@ type ReserveProductRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e ReserveProductRequestValidationError) Field() string { return e.field }
+func (e ReserveItemRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ReserveProductRequestValidationError) Reason() string { return e.reason }
+func (e ReserveItemRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ReserveProductRequestValidationError) Cause() error { return e.cause }
+func (e ReserveItemRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ReserveProductRequestValidationError) Key() bool { return e.key }
+func (e ReserveItemRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ReserveProductRequestValidationError) ErrorName() string {
-	return "ReserveProductRequestValidationError"
+func (e ReserveItemRequestValidationError) ErrorName() string {
+	return "ReserveItemRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ReserveProductRequestValidationError) Error() string {
+func (e ReserveItemRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -142,14 +142,14 @@ func (e ReserveProductRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sReserveProductRequest.%s: %s%s",
+		"invalid %sReserveItemRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ReserveProductRequestValidationError{}
+var _ error = ReserveItemRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -157,48 +157,46 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ReserveProductRequestValidationError{}
+} = ReserveItemRequestValidationError{}
 
-// Validate checks the field values on ReserveProductResponse with the rules
+// Validate checks the field values on ReserveItemResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *ReserveProductResponse) Validate() error {
+func (m *ReserveItemResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on ReserveProductResponse with the rules
+// ValidateAll checks the field values on ReserveItemResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// ReserveProductResponseMultiError, or nil if none found.
-func (m *ReserveProductResponse) ValidateAll() error {
+// ReserveItemResponseMultiError, or nil if none found.
+func (m *ReserveItemResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *ReserveProductResponse) validate(all bool) error {
+func (m *ReserveItemResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for Success
-
-	// no validation rules for Message
+	// no validation rules for Status
 
 	if len(errors) > 0 {
-		return ReserveProductResponseMultiError(errors)
+		return ReserveItemResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// ReserveProductResponseMultiError is an error wrapping multiple validation
-// errors returned by ReserveProductResponse.ValidateAll() if the designated
+// ReserveItemResponseMultiError is an error wrapping multiple validation
+// errors returned by ReserveItemResponse.ValidateAll() if the designated
 // constraints aren't met.
-type ReserveProductResponseMultiError []error
+type ReserveItemResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m ReserveProductResponseMultiError) Error() string {
+func (m ReserveItemResponseMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -207,11 +205,11 @@ func (m ReserveProductResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m ReserveProductResponseMultiError) AllErrors() []error { return m }
+func (m ReserveItemResponseMultiError) AllErrors() []error { return m }
 
-// ReserveProductResponseValidationError is the validation error returned by
-// ReserveProductResponse.Validate if the designated constraints aren't met.
-type ReserveProductResponseValidationError struct {
+// ReserveItemResponseValidationError is the validation error returned by
+// ReserveItemResponse.Validate if the designated constraints aren't met.
+type ReserveItemResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -219,24 +217,24 @@ type ReserveProductResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e ReserveProductResponseValidationError) Field() string { return e.field }
+func (e ReserveItemResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e ReserveProductResponseValidationError) Reason() string { return e.reason }
+func (e ReserveItemResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e ReserveProductResponseValidationError) Cause() error { return e.cause }
+func (e ReserveItemResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e ReserveProductResponseValidationError) Key() bool { return e.key }
+func (e ReserveItemResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e ReserveProductResponseValidationError) ErrorName() string {
-	return "ReserveProductResponseValidationError"
+func (e ReserveItemResponseValidationError) ErrorName() string {
+	return "ReserveItemResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e ReserveProductResponseValidationError) Error() string {
+func (e ReserveItemResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -248,14 +246,14 @@ func (e ReserveProductResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sReserveProductResponse.%s: %s%s",
+		"invalid %sReserveItemResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = ReserveProductResponseValidationError{}
+var _ error = ReserveItemResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -263,24 +261,24 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = ReserveProductResponseValidationError{}
+} = ReserveItemResponseValidationError{}
 
-// Validate checks the field values on CompensateProductRequest with the rules
+// Validate checks the field values on CompensateItemRequest with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *CompensateProductRequest) Validate() error {
+func (m *CompensateItemRequest) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on CompensateProductRequest with the
-// rules defined in the proto definition for this message. If any rules are
+// ValidateAll checks the field values on CompensateItemRequest with the rules
+// defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// CompensateProductRequestMultiError, or nil if none found.
-func (m *CompensateProductRequest) ValidateAll() error {
+// CompensateItemRequestMultiError, or nil if none found.
+func (m *CompensateItemRequest) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *CompensateProductRequest) validate(all bool) error {
+func (m *CompensateItemRequest) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
@@ -288,7 +286,7 @@ func (m *CompensateProductRequest) validate(all bool) error {
 	var errors []error
 
 	if m.GetProductId() <= 0 {
-		err := CompensateProductRequestValidationError{
+		err := CompensateItemRequestValidationError{
 			field:  "ProductId",
 			reason: "value must be greater than 0",
 		}
@@ -299,7 +297,7 @@ func (m *CompensateProductRequest) validate(all bool) error {
 	}
 
 	if m.GetQuantity() <= 0 {
-		err := CompensateProductRequestValidationError{
+		err := CompensateItemRequestValidationError{
 			field:  "Quantity",
 			reason: "value must be greater than 0",
 		}
@@ -310,19 +308,19 @@ func (m *CompensateProductRequest) validate(all bool) error {
 	}
 
 	if len(errors) > 0 {
-		return CompensateProductRequestMultiError(errors)
+		return CompensateItemRequestMultiError(errors)
 	}
 
 	return nil
 }
 
-// CompensateProductRequestMultiError is an error wrapping multiple validation
-// errors returned by CompensateProductRequest.ValidateAll() if the designated
+// CompensateItemRequestMultiError is an error wrapping multiple validation
+// errors returned by CompensateItemRequest.ValidateAll() if the designated
 // constraints aren't met.
-type CompensateProductRequestMultiError []error
+type CompensateItemRequestMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m CompensateProductRequestMultiError) Error() string {
+func (m CompensateItemRequestMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -331,11 +329,11 @@ func (m CompensateProductRequestMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m CompensateProductRequestMultiError) AllErrors() []error { return m }
+func (m CompensateItemRequestMultiError) AllErrors() []error { return m }
 
-// CompensateProductRequestValidationError is the validation error returned by
-// CompensateProductRequest.Validate if the designated constraints aren't met.
-type CompensateProductRequestValidationError struct {
+// CompensateItemRequestValidationError is the validation error returned by
+// CompensateItemRequest.Validate if the designated constraints aren't met.
+type CompensateItemRequestValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -343,24 +341,24 @@ type CompensateProductRequestValidationError struct {
 }
 
 // Field function returns field value.
-func (e CompensateProductRequestValidationError) Field() string { return e.field }
+func (e CompensateItemRequestValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e CompensateProductRequestValidationError) Reason() string { return e.reason }
+func (e CompensateItemRequestValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e CompensateProductRequestValidationError) Cause() error { return e.cause }
+func (e CompensateItemRequestValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e CompensateProductRequestValidationError) Key() bool { return e.key }
+func (e CompensateItemRequestValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e CompensateProductRequestValidationError) ErrorName() string {
-	return "CompensateProductRequestValidationError"
+func (e CompensateItemRequestValidationError) ErrorName() string {
+	return "CompensateItemRequestValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e CompensateProductRequestValidationError) Error() string {
+func (e CompensateItemRequestValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -372,14 +370,14 @@ func (e CompensateProductRequestValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sCompensateProductRequest.%s: %s%s",
+		"invalid %sCompensateItemRequest.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = CompensateProductRequestValidationError{}
+var _ error = CompensateItemRequestValidationError{}
 
 var _ interface {
 	Field() string
@@ -387,48 +385,46 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = CompensateProductRequestValidationError{}
+} = CompensateItemRequestValidationError{}
 
-// Validate checks the field values on CompensateProductResponse with the rules
+// Validate checks the field values on CompensateItemResponse with the rules
 // defined in the proto definition for this message. If any rules are
 // violated, the first error encountered is returned, or nil if there are no violations.
-func (m *CompensateProductResponse) Validate() error {
+func (m *CompensateItemResponse) Validate() error {
 	return m.validate(false)
 }
 
-// ValidateAll checks the field values on CompensateProductResponse with the
-// rules defined in the proto definition for this message. If any rules are
+// ValidateAll checks the field values on CompensateItemResponse with the rules
+// defined in the proto definition for this message. If any rules are
 // violated, the result is a list of violation errors wrapped in
-// CompensateProductResponseMultiError, or nil if none found.
-func (m *CompensateProductResponse) ValidateAll() error {
+// CompensateItemResponseMultiError, or nil if none found.
+func (m *CompensateItemResponse) ValidateAll() error {
 	return m.validate(true)
 }
 
-func (m *CompensateProductResponse) validate(all bool) error {
+func (m *CompensateItemResponse) validate(all bool) error {
 	if m == nil {
 		return nil
 	}
 
 	var errors []error
 
-	// no validation rules for Success
-
-	// no validation rules for Message
+	// no validation rules for Status
 
 	if len(errors) > 0 {
-		return CompensateProductResponseMultiError(errors)
+		return CompensateItemResponseMultiError(errors)
 	}
 
 	return nil
 }
 
-// CompensateProductResponseMultiError is an error wrapping multiple validation
-// errors returned by CompensateProductResponse.ValidateAll() if the
-// designated constraints aren't met.
-type CompensateProductResponseMultiError []error
+// CompensateItemResponseMultiError is an error wrapping multiple validation
+// errors returned by CompensateItemResponse.ValidateAll() if the designated
+// constraints aren't met.
+type CompensateItemResponseMultiError []error
 
 // Error returns a concatenation of all the error messages it wraps.
-func (m CompensateProductResponseMultiError) Error() string {
+func (m CompensateItemResponseMultiError) Error() string {
 	msgs := make([]string, 0, len(m))
 	for _, err := range m {
 		msgs = append(msgs, err.Error())
@@ -437,11 +433,11 @@ func (m CompensateProductResponseMultiError) Error() string {
 }
 
 // AllErrors returns a list of validation violation errors.
-func (m CompensateProductResponseMultiError) AllErrors() []error { return m }
+func (m CompensateItemResponseMultiError) AllErrors() []error { return m }
 
-// CompensateProductResponseValidationError is the validation error returned by
-// CompensateProductResponse.Validate if the designated constraints aren't met.
-type CompensateProductResponseValidationError struct {
+// CompensateItemResponseValidationError is the validation error returned by
+// CompensateItemResponse.Validate if the designated constraints aren't met.
+type CompensateItemResponseValidationError struct {
 	field  string
 	reason string
 	cause  error
@@ -449,24 +445,24 @@ type CompensateProductResponseValidationError struct {
 }
 
 // Field function returns field value.
-func (e CompensateProductResponseValidationError) Field() string { return e.field }
+func (e CompensateItemResponseValidationError) Field() string { return e.field }
 
 // Reason function returns reason value.
-func (e CompensateProductResponseValidationError) Reason() string { return e.reason }
+func (e CompensateItemResponseValidationError) Reason() string { return e.reason }
 
 // Cause function returns cause value.
-func (e CompensateProductResponseValidationError) Cause() error { return e.cause }
+func (e CompensateItemResponseValidationError) Cause() error { return e.cause }
 
 // Key function returns key value.
-func (e CompensateProductResponseValidationError) Key() bool { return e.key }
+func (e CompensateItemResponseValidationError) Key() bool { return e.key }
 
 // ErrorName returns error name.
-func (e CompensateProductResponseValidationError) ErrorName() string {
-	return "CompensateProductResponseValidationError"
+func (e CompensateItemResponseValidationError) ErrorName() string {
+	return "CompensateItemResponseValidationError"
 }
 
 // Error satisfies the builtin error interface
-func (e CompensateProductResponseValidationError) Error() string {
+func (e CompensateItemResponseValidationError) Error() string {
 	cause := ""
 	if e.cause != nil {
 		cause = fmt.Sprintf(" | caused by: %v", e.cause)
@@ -478,14 +474,14 @@ func (e CompensateProductResponseValidationError) Error() string {
 	}
 
 	return fmt.Sprintf(
-		"invalid %sCompensateProductResponse.%s: %s%s",
+		"invalid %sCompensateItemResponse.%s: %s%s",
 		key,
 		e.field,
 		e.reason,
 		cause)
 }
 
-var _ error = CompensateProductResponseValidationError{}
+var _ error = CompensateItemResponseValidationError{}
 
 var _ interface {
 	Field() string
@@ -493,4 +489,4 @@ var _ interface {
 	Key() bool
 	Cause() error
 	ErrorName() string
-} = CompensateProductResponseValidationError{}
+} = CompensateItemResponseValidationError{}

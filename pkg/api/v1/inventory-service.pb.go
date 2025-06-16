@@ -25,8 +25,61 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Общий enum для статусов ответов
+type ResponseStatus int32
+
+const (
+	ResponseStatus_UNKNOWN               ResponseStatus = 0
+	ResponseStatus_SUCCESS               ResponseStatus = 1
+	ResponseStatus_INSUFFICIENT_QUANTITY ResponseStatus = 2
+	ResponseStatus_INTERNAL_ERROR        ResponseStatus = 3
+)
+
+// Enum value maps for ResponseStatus.
+var (
+	ResponseStatus_name = map[int32]string{
+		0: "UNKNOWN",
+		1: "SUCCESS",
+		2: "INSUFFICIENT_QUANTITY",
+		3: "INTERNAL_ERROR",
+	}
+	ResponseStatus_value = map[string]int32{
+		"UNKNOWN":               0,
+		"SUCCESS":               1,
+		"INSUFFICIENT_QUANTITY": 2,
+		"INTERNAL_ERROR":        3,
+	}
+)
+
+func (x ResponseStatus) Enum() *ResponseStatus {
+	p := new(ResponseStatus)
+	*p = x
+	return p
+}
+
+func (x ResponseStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ResponseStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_inventory_service_proto_enumTypes[0].Descriptor()
+}
+
+func (ResponseStatus) Type() protoreflect.EnumType {
+	return &file_inventory_service_proto_enumTypes[0]
+}
+
+func (x ResponseStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ResponseStatus.Descriptor instead.
+func (ResponseStatus) EnumDescriptor() ([]byte, []int) {
+	return file_inventory_service_proto_rawDescGZIP(), []int{0}
+}
+
 // Сообщение для запроса резервирования товара
-type ReserveProductRequest struct {
+type ReserveItemRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ProductId     int64                  `protobuf:"varint,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
 	Quantity      int32                  `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty"`
@@ -34,20 +87,20 @@ type ReserveProductRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ReserveProductRequest) Reset() {
-	*x = ReserveProductRequest{}
+func (x *ReserveItemRequest) Reset() {
+	*x = ReserveItemRequest{}
 	mi := &file_inventory_service_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ReserveProductRequest) String() string {
+func (x *ReserveItemRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ReserveProductRequest) ProtoMessage() {}
+func (*ReserveItemRequest) ProtoMessage() {}
 
-func (x *ReserveProductRequest) ProtoReflect() protoreflect.Message {
+func (x *ReserveItemRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_inventory_service_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -59,19 +112,19 @@ func (x *ReserveProductRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ReserveProductRequest.ProtoReflect.Descriptor instead.
-func (*ReserveProductRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ReserveItemRequest.ProtoReflect.Descriptor instead.
+func (*ReserveItemRequest) Descriptor() ([]byte, []int) {
 	return file_inventory_service_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ReserveProductRequest) GetProductId() int64 {
+func (x *ReserveItemRequest) GetProductId() int64 {
 	if x != nil {
 		return x.ProductId
 	}
 	return 0
 }
 
-func (x *ReserveProductRequest) GetQuantity() int32 {
+func (x *ReserveItemRequest) GetQuantity() int32 {
 	if x != nil {
 		return x.Quantity
 	}
@@ -79,28 +132,27 @@ func (x *ReserveProductRequest) GetQuantity() int32 {
 }
 
 // Сообщение для ответа на резервирование товара
-type ReserveProductResponse struct {
+type ReserveItemResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Status        ResponseStatus         `protobuf:"varint,1,opt,name=status,proto3,enum=api.v1.inventoryservice.ResponseStatus" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ReserveProductResponse) Reset() {
-	*x = ReserveProductResponse{}
+func (x *ReserveItemResponse) Reset() {
+	*x = ReserveItemResponse{}
 	mi := &file_inventory_service_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ReserveProductResponse) String() string {
+func (x *ReserveItemResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ReserveProductResponse) ProtoMessage() {}
+func (*ReserveItemResponse) ProtoMessage() {}
 
-func (x *ReserveProductResponse) ProtoReflect() protoreflect.Message {
+func (x *ReserveItemResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_inventory_service_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -112,27 +164,20 @@ func (x *ReserveProductResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ReserveProductResponse.ProtoReflect.Descriptor instead.
-func (*ReserveProductResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ReserveItemResponse.ProtoReflect.Descriptor instead.
+func (*ReserveItemResponse) Descriptor() ([]byte, []int) {
 	return file_inventory_service_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *ReserveProductResponse) GetSuccess() bool {
+func (x *ReserveItemResponse) GetStatus() ResponseStatus {
 	if x != nil {
-		return x.Success
+		return x.Status
 	}
-	return false
-}
-
-func (x *ReserveProductResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
+	return ResponseStatus_UNKNOWN
 }
 
 // Сообщение для запроса компенсации товара
-type CompensateProductRequest struct {
+type CompensateItemRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ProductId     int64                  `protobuf:"varint,1,opt,name=product_id,json=productId,proto3" json:"product_id,omitempty"`
 	Quantity      int32                  `protobuf:"varint,2,opt,name=quantity,proto3" json:"quantity,omitempty"`
@@ -140,20 +185,20 @@ type CompensateProductRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CompensateProductRequest) Reset() {
-	*x = CompensateProductRequest{}
+func (x *CompensateItemRequest) Reset() {
+	*x = CompensateItemRequest{}
 	mi := &file_inventory_service_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CompensateProductRequest) String() string {
+func (x *CompensateItemRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CompensateProductRequest) ProtoMessage() {}
+func (*CompensateItemRequest) ProtoMessage() {}
 
-func (x *CompensateProductRequest) ProtoReflect() protoreflect.Message {
+func (x *CompensateItemRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_inventory_service_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -165,19 +210,19 @@ func (x *CompensateProductRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CompensateProductRequest.ProtoReflect.Descriptor instead.
-func (*CompensateProductRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use CompensateItemRequest.ProtoReflect.Descriptor instead.
+func (*CompensateItemRequest) Descriptor() ([]byte, []int) {
 	return file_inventory_service_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CompensateProductRequest) GetProductId() int64 {
+func (x *CompensateItemRequest) GetProductId() int64 {
 	if x != nil {
 		return x.ProductId
 	}
 	return 0
 }
 
-func (x *CompensateProductRequest) GetQuantity() int32 {
+func (x *CompensateItemRequest) GetQuantity() int32 {
 	if x != nil {
 		return x.Quantity
 	}
@@ -185,28 +230,27 @@ func (x *CompensateProductRequest) GetQuantity() int32 {
 }
 
 // Сообщение для ответа на компенсацию товара
-type CompensateProductResponse struct {
+type CompensateItemResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Status        ResponseStatus         `protobuf:"varint,1,opt,name=status,proto3,enum=api.v1.inventoryservice.ResponseStatus" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *CompensateProductResponse) Reset() {
-	*x = CompensateProductResponse{}
+func (x *CompensateItemResponse) Reset() {
+	*x = CompensateItemResponse{}
 	mi := &file_inventory_service_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *CompensateProductResponse) String() string {
+func (x *CompensateItemResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*CompensateProductResponse) ProtoMessage() {}
+func (*CompensateItemResponse) ProtoMessage() {}
 
-func (x *CompensateProductResponse) ProtoReflect() protoreflect.Message {
+func (x *CompensateItemResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_inventory_service_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -218,47 +262,43 @@ func (x *CompensateProductResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use CompensateProductResponse.ProtoReflect.Descriptor instead.
-func (*CompensateProductResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use CompensateItemResponse.ProtoReflect.Descriptor instead.
+func (*CompensateItemResponse) Descriptor() ([]byte, []int) {
 	return file_inventory_service_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *CompensateProductResponse) GetSuccess() bool {
+func (x *CompensateItemResponse) GetStatus() ResponseStatus {
 	if x != nil {
-		return x.Success
+		return x.Status
 	}
-	return false
-}
-
-func (x *CompensateProductResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
+	return ResponseStatus_UNKNOWN
 }
 
 var File_inventory_service_proto protoreflect.FileDescriptor
 
 const file_inventory_service_proto_rawDesc = "" +
 	"\n" +
-	"\x17inventory-service.proto\x12\x17api.v1.inventoryservice\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"d\n" +
-	"\x15ReserveProductRequest\x12&\n" +
+	"\x17inventory-service.proto\x12\x17api.v1.inventoryservice\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x17validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"a\n" +
+	"\x12ReserveItemRequest\x12&\n" +
 	"\n" +
 	"product_id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\tproductId\x12#\n" +
-	"\bquantity\x18\x02 \x01(\x05B\a\xfaB\x04\x1a\x02 \x00R\bquantity\"L\n" +
-	"\x16ReserveProductResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"g\n" +
-	"\x18CompensateProductRequest\x12&\n" +
+	"\bquantity\x18\x02 \x01(\x05B\a\xfaB\x04\x1a\x02 \x00R\bquantity\"V\n" +
+	"\x13ReserveItemResponse\x12?\n" +
+	"\x06status\x18\x01 \x01(\x0e2'.api.v1.inventoryservice.ResponseStatusR\x06status\"d\n" +
+	"\x15CompensateItemRequest\x12&\n" +
 	"\n" +
 	"product_id\x18\x01 \x01(\x03B\a\xfaB\x04\"\x02 \x00R\tproductId\x12#\n" +
-	"\bquantity\x18\x02 \x01(\x05B\a\xfaB\x04\x1a\x02 \x00R\bquantity\"O\n" +
-	"\x19CompensateProductResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage2\xc4\x02\n" +
-	"\x10InventoryService\x12\x90\x01\n" +
-	"\x0eReserveProduct\x12..api.v1.inventoryservice.ReserveProductRequest\x1a/.api.v1.inventoryservice.ReserveProductResponse\"\x1d\x82\xd3\xe4\x93\x02\x17:\x01*\"\x12/inventory/reserve\x12\x9c\x01\n" +
-	"\x11CompensateProduct\x121.api.v1.inventoryservice.CompensateProductRequest\x1a2.api.v1.inventoryservice.CompensateProductResponse\" \x82\xd3\xe4\x93\x02\x1a:\x01*\"\x15/inventory/compensateBs\x92A`\x12:\n" +
+	"\bquantity\x18\x02 \x01(\x05B\a\xfaB\x04\x1a\x02 \x00R\bquantity\"Y\n" +
+	"\x16CompensateItemResponse\x12?\n" +
+	"\x06status\x18\x01 \x01(\x0e2'.api.v1.inventoryservice.ResponseStatusR\x06status*Y\n" +
+	"\x0eResponseStatus\x12\v\n" +
+	"\aUNKNOWN\x10\x00\x12\v\n" +
+	"\aSUCCESS\x10\x01\x12\x19\n" +
+	"\x15INSUFFICIENT_QUANTITY\x10\x02\x12\x12\n" +
+	"\x0eINTERNAL_ERROR\x10\x032\xc0\x02\n" +
+	"\x10InventoryService\x12\x8e\x01\n" +
+	"\vReserveItem\x12+.api.v1.inventoryservice.ReserveItemRequest\x1a,.api.v1.inventoryservice.ReserveItemResponse\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/api/v1/inventory/reserve\x12\x9a\x01\n" +
+	"\x0eCompensateItem\x12..api.v1.inventoryservice.CompensateItemRequest\x1a/.api.v1.inventoryservice.CompensateItemResponse\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/api/v1/inventory/compensateBs\x92A`\x12:\n" +
 	"\x11Inventory service\x12\x1eService for managing inventory2\x051.0.02\x10application/json:\x10application/jsonZ\x0epkg/api/v1;apib\x06proto3"
 
 var (
@@ -273,23 +313,27 @@ func file_inventory_service_proto_rawDescGZIP() []byte {
 	return file_inventory_service_proto_rawDescData
 }
 
+var file_inventory_service_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_inventory_service_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_inventory_service_proto_goTypes = []any{
-	(*ReserveProductRequest)(nil),     // 0: api.v1.inventoryservice.ReserveProductRequest
-	(*ReserveProductResponse)(nil),    // 1: api.v1.inventoryservice.ReserveProductResponse
-	(*CompensateProductRequest)(nil),  // 2: api.v1.inventoryservice.CompensateProductRequest
-	(*CompensateProductResponse)(nil), // 3: api.v1.inventoryservice.CompensateProductResponse
+	(ResponseStatus)(0),            // 0: api.v1.inventoryservice.ResponseStatus
+	(*ReserveItemRequest)(nil),     // 1: api.v1.inventoryservice.ReserveItemRequest
+	(*ReserveItemResponse)(nil),    // 2: api.v1.inventoryservice.ReserveItemResponse
+	(*CompensateItemRequest)(nil),  // 3: api.v1.inventoryservice.CompensateItemRequest
+	(*CompensateItemResponse)(nil), // 4: api.v1.inventoryservice.CompensateItemResponse
 }
 var file_inventory_service_proto_depIdxs = []int32{
-	0, // 0: api.v1.inventoryservice.InventoryService.ReserveProduct:input_type -> api.v1.inventoryservice.ReserveProductRequest
-	2, // 1: api.v1.inventoryservice.InventoryService.CompensateProduct:input_type -> api.v1.inventoryservice.CompensateProductRequest
-	1, // 2: api.v1.inventoryservice.InventoryService.ReserveProduct:output_type -> api.v1.inventoryservice.ReserveProductResponse
-	3, // 3: api.v1.inventoryservice.InventoryService.CompensateProduct:output_type -> api.v1.inventoryservice.CompensateProductResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: api.v1.inventoryservice.ReserveItemResponse.status:type_name -> api.v1.inventoryservice.ResponseStatus
+	0, // 1: api.v1.inventoryservice.CompensateItemResponse.status:type_name -> api.v1.inventoryservice.ResponseStatus
+	1, // 2: api.v1.inventoryservice.InventoryService.ReserveItem:input_type -> api.v1.inventoryservice.ReserveItemRequest
+	3, // 3: api.v1.inventoryservice.InventoryService.CompensateItem:input_type -> api.v1.inventoryservice.CompensateItemRequest
+	2, // 4: api.v1.inventoryservice.InventoryService.ReserveItem:output_type -> api.v1.inventoryservice.ReserveItemResponse
+	4, // 5: api.v1.inventoryservice.InventoryService.CompensateItem:output_type -> api.v1.inventoryservice.CompensateItemResponse
+	4, // [4:6] is the sub-list for method output_type
+	2, // [2:4] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_inventory_service_proto_init() }
@@ -302,13 +346,14 @@ func file_inventory_service_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_inventory_service_proto_rawDesc), len(file_inventory_service_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_inventory_service_proto_goTypes,
 		DependencyIndexes: file_inventory_service_proto_depIdxs,
+		EnumInfos:         file_inventory_service_proto_enumTypes,
 		MessageInfos:      file_inventory_service_proto_msgTypes,
 	}.Build()
 	File_inventory_service_proto = out.File

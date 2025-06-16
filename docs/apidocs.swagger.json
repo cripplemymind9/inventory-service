@@ -17,15 +17,15 @@
     "application/json"
   ],
   "paths": {
-    "/inventory/compensate": {
+    "/api/v1/inventory/compensate": {
       "post": {
         "summary": "Компенсация товара",
-        "operationId": "InventoryService_CompensateProduct",
+        "operationId": "InventoryService_CompensateItem",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/inventoryserviceCompensateProductResponse"
+              "$ref": "#/definitions/inventoryserviceCompensateItemResponse"
             }
           },
           "default": {
@@ -41,7 +41,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/inventoryserviceCompensateProductRequest"
+              "$ref": "#/definitions/inventoryserviceCompensateItemRequest"
             }
           }
         ],
@@ -50,15 +50,15 @@
         ]
       }
     },
-    "/inventory/reserve": {
+    "/api/v1/inventory/reserve": {
       "post": {
         "summary": "Резервирование товара",
-        "operationId": "InventoryService_ReserveProduct",
+        "operationId": "InventoryService_ReserveItem",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/inventoryserviceReserveProductResponse"
+              "$ref": "#/definitions/inventoryserviceReserveItemResponse"
             }
           },
           "default": {
@@ -74,7 +74,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/inventoryserviceReserveProductRequest"
+              "$ref": "#/definitions/inventoryserviceReserveItemRequest"
             }
           }
         ],
@@ -85,7 +85,7 @@
     }
   },
   "definitions": {
-    "inventoryserviceCompensateProductRequest": {
+    "inventoryserviceCompensateItemRequest": {
       "type": "object",
       "properties": {
         "productId": {
@@ -99,19 +99,16 @@
       },
       "title": "Сообщение для запроса компенсации товара"
     },
-    "inventoryserviceCompensateProductResponse": {
+    "inventoryserviceCompensateItemResponse": {
       "type": "object",
       "properties": {
-        "success": {
-          "type": "boolean"
-        },
-        "message": {
-          "type": "string"
+        "status": {
+          "$ref": "#/definitions/inventoryserviceResponseStatus"
         }
       },
       "title": "Сообщение для ответа на компенсацию товара"
     },
-    "inventoryserviceReserveProductRequest": {
+    "inventoryserviceReserveItemRequest": {
       "type": "object",
       "properties": {
         "productId": {
@@ -125,17 +122,25 @@
       },
       "title": "Сообщение для запроса резервирования товара"
     },
-    "inventoryserviceReserveProductResponse": {
+    "inventoryserviceReserveItemResponse": {
       "type": "object",
       "properties": {
-        "success": {
-          "type": "boolean"
-        },
-        "message": {
-          "type": "string"
+        "status": {
+          "$ref": "#/definitions/inventoryserviceResponseStatus"
         }
       },
       "title": "Сообщение для ответа на резервирование товара"
+    },
+    "inventoryserviceResponseStatus": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "SUCCESS",
+        "INSUFFICIENT_QUANTITY",
+        "INTERNAL_ERROR"
+      ],
+      "default": "UNKNOWN",
+      "title": "Общий enum для статусов ответов"
     },
     "protobufAny": {
       "type": "object",

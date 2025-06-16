@@ -11,4 +11,4 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize
 # Переменные окружения
 COPY .env .
 # Ждем готовности сервисов и запускаем приложение
-CMD ["dockerize", "-wait", "tcp://db:5432", "-timeout", "60s", "./main"]
+CMD ["dockerize", "-wait", "tcp://db:5433", "-timeout", "60s", "./main"]

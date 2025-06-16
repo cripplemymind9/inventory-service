@@ -15,7 +15,7 @@ type Config struct {
 	ServiceName string
 
 	Server Server
-	DB 	   DB
+	DB     DB
 }
 
 type DB struct {

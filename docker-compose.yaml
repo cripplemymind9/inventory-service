@@ -3,7 +3,8 @@ services:
     container_name: inventory_service_pg
     image: postgres:15
     ports:
-      - "${DB_PORT}:5432"
+      - "${DB_PORT}:${DB_PORT}"
+    command: -p ${DB_PORT}
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
@@ -11,6 +12,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -p ${DB_PORT} -U ${DB_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     
   app:
     container_name: inventory_service_app
@@ -22,7 +28,9 @@ services:
       - "${GRPC_PORT}:${GRPC_PORT}"
     env_file:
       - .env
-    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
 
 volumes:
   postgres_data:

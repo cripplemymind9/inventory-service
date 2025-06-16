@@ -8,8 +8,12 @@ import (
 
 	gokit "github.com/cripplemymind9/go-utils/go-kit"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/jackc/pgx/v5/stdlib"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc"
+
+	"github.com/cripplemymind9/inventory-service/internal/pkg/postgres"
+	"github.com/cripplemymind9/inventory-service/migrations"
 
 	"github.com/cripplemymind9/inventory-service/internal/config"
 	"github.com/cripplemymind9/inventory-service/internal/server"
@@ -24,6 +28,29 @@ type App struct {
 	cfg config.Config
 
 	server *server.Server
+}
+
+func New(ctx context.Context, cfg config.Config) (*App, error) {
+	db, err := getDB(ctx, cfg.DB)
+	if err != nil {
+		return nil, err
+	}
+
+	serverDependencies, err := getGRPCServerDependencies(cfg, db)
+	if err != nil {
+		return nil, err
+	}
+
+	server := server.New(cfg, serverDependencies)
+
+	ctx, cancel := context.WithCancel(ctx)
+
+	return &App{
+		ctx:    ctx,
+		cancel: cancel,
+		server: server,
+		cfg:    cfg,
+	}, nil
 }
 
 func (a *App) Run() error {
@@ -57,25 +84,27 @@ func (a *App) RegisterHandlersFromEndpoint(
 	return a.server.RegisterHandlersFromEndPoint(ctx, mux, endpoint, opts)
 }
 
-func New(ctx context.Context, cfg config.Config) (*App, error) {
-	serverDependencies, err := getGRPCServerDependencies(cfg)
+func getDB(ctx context.Context, cfg config.DB) (*postgres.DB, error) {
+	db, err := postgres.New(ctx, postgres.Config{
+		DBName:   cfg.DBName,
+		HostPort: cfg.HostPort,
+		Username: cfg.User,
+		Password: cfg.Password,
+	})
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("new db instance err: %w", err)
 	}
 
-	server := server.New(cfg, serverDependencies)
+	stdDB := stdlib.OpenDBFromPool(db.Pool)
 
-	ctx, cancel := context.WithCancel(ctx)
+	if err = migrations.Up(ctx, stdDB); err != nil {
+		return nil, fmt.Errorf("sheme migrations err: %w", err)
+	}
 
-	return &App{
-		ctx:    ctx,
-		cancel: cancel,
-		server: server,
-		cfg:    cfg,
-	}, nil
+	return db, err
 }
 
 //nolint:unparam // Функция возвращает error для соответствия интерфейсу, но в текущей реализации ошибка всегда nil
-func getGRPCServerDependencies(_ config.Config) (*server.Dependencies, error) {
+func getGRPCServerDependencies(_ config.Config, _ *postgres.DB) (*server.Dependencies, error) {
 	return server.NewDependencies(), nil
 }

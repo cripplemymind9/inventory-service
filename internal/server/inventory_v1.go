@@ -22,7 +22,7 @@ func (s *Server) ReserveItem(
 		if errors.Is(err, entity.ErrNotEnoughStock) {
 			return &api.ReserveItemResponse{
 				Status: api.ResponseStatus_INSUFFICIENT_QUANTITY,
-			}, nil
+			}, err
 		}
 		return &api.ReserveItemResponse{
 			Status: api.ResponseStatus_INTERNAL_ERROR,
@@ -47,7 +47,7 @@ func (s *Server) CompensateItem(
 		if errors.Is(err, entity.ErrNotEnoughReserved) {
 			return &api.CompensateItemResponse{
 				Status: api.ResponseStatus_INSUFFICIENT_QUANTITY,
-			}, nil
+			}, err
 		}
 		return &api.CompensateItemResponse{
 			Status: api.ResponseStatus_INTERNAL_ERROR,
